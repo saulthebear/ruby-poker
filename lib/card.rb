@@ -14,6 +14,18 @@ class Card
     @rank = rank
   end
 
+  def <=>(other)
+    my_suit_index = SUITS.index(@suit)
+    other_suit_index = SUITS.index(other.suit)
+    suit_comparison = my_suit_index <=> other_suit_index
+    return suit_comparison unless suit_comparison.zero?
+
+    my_rank_index = RANKS.index(@rank)
+    other_rank_index = RANKS.index(other.rank)
+
+    my_rank_index <=> other_rank_index
+  end
+
   def ==(other)
     suit == other.suit && rank == other.rank
   end

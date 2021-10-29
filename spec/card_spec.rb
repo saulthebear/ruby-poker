@@ -59,4 +59,33 @@ describe Card do
       expect(five_of_clubs).to_not eq(five_of_spades)
     end
   end
+
+  describe '#<=>' do
+    let(:ace_of_spades) { Card.new(Suit.new('spade'), 'A') }
+    let(:ace_of_diamonds) { Card.new(Suit.new('diamond'), 'A') }
+    let(:ace_of_clubs) { Card.new(Suit.new('club'), 'A') }
+    let(:ace_of_hearts) { Card.new(Suit.new('heart'), 'A') }
+    let(:king_of_spades) { Card.new(Suit.new('spade'), 'K') }
+    let(:queen_of_spades) { Card.new(Suit.new('spade'), 'Q') }
+    let(:two_of_spades) { Card.new(Suit.new('spade'), 2) }
+    it 'compares cards by rank (spade < diamond < club < heart)' do
+      expect(ace_of_spades <=> ace_of_diamonds).to eq(-1)
+      expect(ace_of_diamonds <=> ace_of_clubs).to eq(-1)
+      expect(ace_of_clubs <=> ace_of_hearts).to eq(-1)
+      expect(ace_of_hearts <=> ace_of_spades).to eq(1)
+      expect(ace_of_clubs <=> ace_of_diamonds).to eq(1)
+    end
+
+    it 'compares cards by rank (Ace is low)' do
+      expect(ace_of_spades <=> king_of_spades).to eq(-1)
+      expect(ace_of_spades <=> two_of_spades).to eq(-1)
+      expect(two_of_spades <=> ace_of_spades).to eq(1)
+      expect(king_of_spades <=> ace_of_spades).to eq(1)
+      expect(king_of_spades <=> queen_of_spades).to eq(1)
+    end
+
+    it 'returns 0 for cards of equal suit and rank' do
+      expect(two_of_spades <=> Card.new(Suit.new('spade'), 2)).to eq(0)
+    end
+  end
 end
