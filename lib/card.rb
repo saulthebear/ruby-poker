@@ -12,8 +12,12 @@ class Card
     @rank = rank
   end
 
-  def inspect
+  def to_s
     color = @suit.color
-    "<#{@rank} #{@suit}>".colorize(color: color)
+    "#{@rank} #{@suit}".colorize(color: color)
+  end
+
+  def inspect
+    "<#{self}>"
   end
 end
