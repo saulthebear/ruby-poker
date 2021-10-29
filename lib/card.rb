@@ -12,6 +12,16 @@ class Card
     @rank = rank
   end
 
+  def ==(other)
+    suit == other.suit && rank == other.rank
+  end
+
+  alias eql? ==
+
+  def hash
+    [@name, @color, @symbol].hash
+  end
+
   def to_s
     color = @suit.color
     "#{@rank} #{@suit}".colorize(color: color)

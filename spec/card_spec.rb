@@ -40,4 +40,23 @@ describe Card do
       expect(subject.inspect.uncolorize).to eq('<7 ♠>'.uncolorize)
     end
   end
+
+  describe '#==' do
+    let(:four_of_clubs1) { Card.new(Suit.new('club'), 4) }
+    let(:four_of_clubs2) { Card.new(Suit.new('club'), 4) }
+    let(:five_of_clubs) { Card.new(Suit.new('club'), 5) }
+    let(:five_of_spades) { Card.new(Suit.new('spade'), 5) }
+
+    it 'passes for two cards with same suit and rank' do
+      expect(four_of_clubs1).to eq(four_of_clubs2)
+    end
+
+    it 'doesn\'t pass for two cards with same suit and different rank' do
+      expect(four_of_clubs1).to_not eq(five_of_clubs)
+    end
+
+    it 'doesn\'t pass for two cards with different suits and same rank' do
+      expect(five_of_clubs).to_not eq(five_of_spades)
+    end
+  end
 end

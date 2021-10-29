@@ -33,4 +33,19 @@ describe Suit do
     expect(Suit.new('diamond').to_s).to eq('♦'.red)
     expect(Suit.new('club').to_s).to eq('♣'.light_black)
   end
+
+  describe '#==' do
+    let(:club1) { Suit.new('club') }
+    let(:club2) { Suit.new('club') }
+    let(:spade1) { Suit.new('spade') }
+    let(:spade2) { Suit.new('spade') }
+    it 'passes for two suits with the same name' do
+      expect(club1).to eq(club2)
+      expect(spade1).to eq(spade2)
+    end
+
+    it 'doesn\'t pass for two suits with different names' do
+      expect(club1).to_not eq(spade1)
+    end
+  end
 end

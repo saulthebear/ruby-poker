@@ -16,6 +16,16 @@ class Suit
     @symbol = SYMBOLS[NAMES.index(@name)]
   end
 
+  def ==(other)
+    @name == other.name
+  end
+
+  alias eql? ==
+
+  def hash
+    [@name, @color, @symbol].hash
+  end
+
   def to_s
     @symbol.colorize(color: @color)
   end
