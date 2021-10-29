@@ -3,7 +3,7 @@ require 'card'
 
 describe Card do
   # let(:suit) { Suit.new('spade') }
-  let(:suit) { double('spade', is_a?: true, inspect: '♠'.black, color: :black) }
+  let(:suit) { double('spade', name: 'spade', is_a?: true, inspect: '♠'.black, color: :black) }
   subject { Card.new(suit, 7) }
 
   describe '#initialize' do

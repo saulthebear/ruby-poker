@@ -1,12 +1,14 @@
 require_relative 'suit'
+require_relative 'card_constants'
+
 class Card
-  RANKS = %w[A J Q K] + (2..10).to_a
+  include CardConstants
 
   attr_reader :suit, :rank
 
   def initialize(suit, rank)
     raise ArgumentError, 'Incorrect rank.' unless RANKS.include?(rank)
-    raise ArgumentError, 'Incorrect suit.' unless suit.is_a?(Suit)
+    raise ArgumentError, 'Incorrect suit.' unless suit.is_a?(Suit) && SUITS.include?(suit)
 
     @suit = suit
     @rank = rank
