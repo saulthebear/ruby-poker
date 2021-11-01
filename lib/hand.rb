@@ -4,6 +4,17 @@ require_relative 'card_constants'
 class Hand
   include CardConstants
 
+  def self.new_full_hand(cards)
+    raise ArgumentError, '5 cards required!' unless cards.length == 5
+
+    hand = Hand.new
+    cards.each do |card|
+      hand.add_card(card)
+    end
+
+    hand
+  end
+
   attr_reader :cards
 
   def initialize
@@ -67,12 +78,12 @@ class Hand
     my_ranking <=> other_ranking
   end
 
-  private
+  # private
 
   def royal_flush?
     return false unless flush?
 
-    required_ranks = %w[A K Q J 10]
+    required_ranks = %i[A K Q J ten]
     ranks.map(&:to_s).sort == required_ranks.map(&:to_s).sort
   end
 
@@ -146,7 +157,7 @@ class Hand
 
   def rank_indices_ace_high
     @cards.map do |card|
-      if card.rank == 'A'
+      if card.rank == :A
         high_ace_rank(card)
       else
         rank_index(card)
@@ -167,21 +178,21 @@ class Hand
   end
 
   def rank_index(card, ace_high: false)
-    return 13 if ace_high && card.rank == 'A'
+    return 13 if ace_high && card.rank == :A
 
     RANKS.index(card.rank)
   end
 
   def high_ace_rank(card)
-    raise ArgumentError, 'Not an Ace' unless card.rank == 'A'
+    raise ArgumentError, 'Not an Ace' unless card.rank == :A
 
     high_ace = {
-      'spade' => 13,
-      'diamond' => 26,
-      'club' => 39,
-      'heart' => 52
+      spade: 13,
+      diamond: 26,
+      club: 39,
+      heart: 52
     }
 
-    high_ace[card.suit.name]
+    high_ace[card.suit]
   end
 end

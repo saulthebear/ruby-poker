@@ -1,5 +1,4 @@
 require_relative 'card'
-require_relative 'suit'
 require_relative 'card_constants'
 
 class Deck

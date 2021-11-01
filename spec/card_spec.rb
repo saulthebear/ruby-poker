@@ -2,36 +2,31 @@ require 'rspec'
 require 'card'
 
 describe Card do
-  # let(:suit) { Suit.new('spade') }
-  let(:suit) { double('spade', name: 'spade', is_a?: true, inspect: '♠'.black, color: :black) }
-  subject { Card.new(suit, 7) }
+  subject { Card.new(:spade, :seven) }
 
   describe '#initialize' do
     it 'accepts a suit and a rank' do
-      expect { Card.new(suit, 5) }.to_not raise_error
+      expect { Card.new(:spade, :five) }.to_not raise_error
     end
 
     it 'does not accept an incorrect rank argument' do
-      expect { Card.new(suit, 0) }.to raise_error ArgumentError, 'Incorrect rank.'
-      expect { Card.new(suit, 11) }.to raise_error ArgumentError, 'Incorrect rank.'
-      expect { Card.new(suit, 1) }.to raise_error ArgumentError, 'Incorrect rank.'
-      expect { Card.new(suit, 'B') }.to raise_error ArgumentError, 'Incorrect rank.'
+      expect { Card.new(:spade, :one) }.to raise_error ArgumentError, 'Incorrect rank.'
     end
 
     it 'does not accept an incorrect suit argument' do
-      expect { Card.new('club', 4) }.to raise_error ArgumentError, 'Incorrect suit.'
+      expect { Card.new(:triangle, :four) }.to raise_error ArgumentError, 'Incorrect suit.'
     end
   end
 
   describe '#rank' do
     it 'returns the rank' do
-      expect(subject.rank).to eq(7)
+      expect(subject.rank).to eq(:seven)
     end
   end
 
   describe '#suit' do
     it 'returns the suit' do
-      expect(subject.suit).to eq(suit)
+      expect(subject.suit).to eq(:spade)
     end
   end
 
@@ -42,10 +37,10 @@ describe Card do
   end
 
   describe '#==' do
-    let(:four_of_clubs1) { Card.new(Suit.new('club'), 4) }
-    let(:four_of_clubs2) { Card.new(Suit.new('club'), 4) }
-    let(:five_of_clubs) { Card.new(Suit.new('club'), 5) }
-    let(:five_of_spades) { Card.new(Suit.new('spade'), 5) }
+    let(:four_of_clubs1) { Card.new(:club, :four) }
+    let(:four_of_clubs2) { Card.new(:club, :four) }
+    let(:five_of_clubs) { Card.new(:club, :five) }
+    let(:five_of_spades) { Card.new(:spade, :five) }
 
     it 'passes for two cards with same suit and rank' do
       expect(four_of_clubs1).to eq(four_of_clubs2)
@@ -61,14 +56,14 @@ describe Card do
   end
 
   describe '#<=>' do
-    let(:ace_of_spades) { Card.new(Suit.new('spade'), 'A') }
-    let(:ace_of_diamonds) { Card.new(Suit.new('diamond'), 'A') }
-    let(:ace_of_clubs) { Card.new(Suit.new('club'), 'A') }
-    let(:ace_of_hearts) { Card.new(Suit.new('heart'), 'A') }
-    let(:king_of_spades) { Card.new(Suit.new('spade'), 'K') }
-    let(:queen_of_spades) { Card.new(Suit.new('spade'), 'Q') }
-    let(:two_of_spades) { Card.new(Suit.new('spade'), 2) }
-    it 'compares cards by rank (spade < diamond < club < heart)' do
+    let(:ace_of_spades) { Card.new(:spade, :A) }
+    let(:ace_of_diamonds) { Card.new(:diamond, :A) }
+    let(:ace_of_clubs) { Card.new(:club, :A) }
+    let(:ace_of_hearts) { Card.new(:heart, :A) }
+    let(:king_of_spades) { Card.new(:spade, :K) }
+    let(:queen_of_spades) { Card.new(:spade, :Q) }
+    let(:two_of_spades) { Card.new(:spade, :two) }
+    it 'compares cards by suit (spade < diamond < club < heart)' do
       expect(ace_of_spades <=> ace_of_diamonds).to eq(-1)
       expect(ace_of_diamonds <=> ace_of_clubs).to eq(-1)
       expect(ace_of_clubs <=> ace_of_hearts).to eq(-1)
@@ -85,7 +80,7 @@ describe Card do
     end
 
     it 'returns 0 for cards of equal suit and rank' do
-      expect(two_of_spades <=> Card.new(Suit.new('spade'), 2)).to eq(0)
+      expect(two_of_spades <=> Card.new(:spade, :two)).to eq(0)
     end
   end
 end

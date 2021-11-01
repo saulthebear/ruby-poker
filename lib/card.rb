@@ -1,4 +1,5 @@
-require_relative 'suit'
+# require_relative 'suit'
+require 'colorize'
 require_relative 'card_constants'
 
 class Card
@@ -8,22 +9,18 @@ class Card
 
   def initialize(suit, rank)
     raise ArgumentError, 'Incorrect rank.' unless RANKS.include?(rank)
-    raise ArgumentError, 'Incorrect suit.' unless suit.is_a?(Suit) && SUITS.include?(suit)
+    raise ArgumentError, 'Incorrect suit.' unless SUITS.include?(suit)
 
     @suit = suit
     @rank = rank
+    @color = COLORS[suit]
   end
 
   def <=>(other)
-    my_suit_index = SUITS.index(@suit)
-    other_suit_index = SUITS.index(other.suit)
-    suit_comparison = my_suit_index <=> other_suit_index
+    suit_comparison = suit_index(@suit) <=> suit_index(other.suit)
     return suit_comparison unless suit_comparison.zero?
 
-    my_rank_index = RANKS.index(@rank)
-    other_rank_index = RANKS.index(other.rank)
-
-    my_rank_index <=> other_rank_index
+    rank_index(@rank) <=> rank_index(other.rank)
   end
 
   def ==(other)
@@ -33,15 +30,32 @@ class Card
   alias eql? ==
 
   def hash
-    [@name, @color, @symbol].hash
+    [@suit, @rank, @color].hash
   end
 
   def to_s
-    color = @suit.color
-    "#{@rank} #{@suit}".colorize(color: color)
+    "#{rank_string} #{suit_string}".colorize(color: @color)
   end
 
   def inspect
     "<#{self}>"
+  end
+
+  private
+
+  def rank_index(rank)
+    RANKS.index(rank)
+  end
+
+  def suit_index(suit)
+    SUITS.index(suit)
+  end
+
+  def rank_string
+    RANK_STRINGS[rank_index(@rank)]
+  end
+
+  def suit_string
+    SUIT_STRINGS[suit_index(@suit)]
   end
 end
