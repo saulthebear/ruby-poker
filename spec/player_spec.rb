@@ -86,4 +86,27 @@ describe Player do
       expect(subject.hand.cards.length).to be(5)
     end
   end
+
+  describe '#new_hand' do
+    let(:new_hand) do
+      Hand.new_full_hand([
+        Card.new(:diamond, :A),
+        Card.new(:club, :J),
+        Card.new(:spade, :Q),
+        Card.new(:heart, :two),
+        Card.new(:club, :nine)
+        ])
+    end
+
+    it 'changes the player\'s hand' do
+      old_cards = subject.hand.cards
+      subject.new_hand(new_hand)
+      expect(old_cards).to_not match_array(subject.hand.cards)
+    end
+
+    it 'returns the old cards' do
+      old_cards = subject.hand.cards
+      expect(subject.new_hand(new_hand)).to match_array(old_cards)
+    end
+  end
 end

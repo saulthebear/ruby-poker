@@ -24,7 +24,6 @@ class Player
   end
 
   def handle_action(action_and_amount)
-    # debugger
     action, amount = action_and_amount
     case action
     when :bet
@@ -40,5 +39,11 @@ class Player
     indices.each_with_index do |hand_index, new_cards_index|
       @hand.replace_card(hand_index, new_cards[new_cards_index])
     end
+  end
+
+  def new_hand(new_hand)
+    old_cards = @hand.cards
+    @hand = new_hand
+    old_cards
   end
 end
