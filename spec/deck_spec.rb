@@ -30,4 +30,51 @@ describe Deck do
       expect(subject.cards).to_not include(dealt_card)
     end
   end
+
+  describe '#deal_cards' do
+    it 'calls #deal_card' do
+      expect(subject).to receive(:deal_card).exactly(5).times
+      subject.deal_cards(5)
+    end
+
+    it 'returns an array with the number of cards requested' do
+      cards = subject.deal_cards(5)
+      expect(cards).to be_an(Array)
+      expect(cards.length).to eq(5)
+      expect(cards).to all(be_a(Card))
+    end
+
+    it 'raises an error for an incorrect number' do
+      expect { subject.deal_cards(0) }.to raise_error ArgumentError
+      expect { subject.deal_cards(53) }.to raise_error ArgumentError
+    end
+  end
+  
+  describe '#return_cards' do
+    it 'adds the cards to the deck' do
+      card1 = subject.deal_card
+      card2 = subject.deal_card
+      expect(subject.cards).to_not include(card1, card2)
+      subject.return_cards([card1, card2])
+      expect(subject.cards).to include(card1, card2)
+    end
+    
+    it 'raises an error if the card is already in the deck' do
+      card1 = Card.new(:heart, :A)
+      expect { subject.return_cards([card1]) }.to raise_error ArgumentError
+    end
+    
+    it 'raises an error if the cards aren\'t of type Card' do
+      expect { subject.return_cards(['Ace of Hearts']) }.to raise_error ArgumentError
+    end
+  end
+
+  describe '#shuffle!' do
+    it 'changes the card order' do
+      before_suffle = subject.cards
+      subject.shuffle!
+      expect(before_suffle).to_not eq(subject.cards)
+      expect(before_suffle).to match_array(subject.cards)
+    end
+  end
 end
